@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://w47h8kxhiq20"]
+
+[ext_resource type="PackedScene" uid="uid://g2w2608bc2dy" path="res://Models/cloud.glb" id="1_bo1nx"]
+[ext_resource type="Script" uid="uid://bqmahs16hwies" path="res://Models/cloud-color-changer.gd" id="2_8gbba"]
+
+[node name="Main" type="Node2D"]
+
+[node name="cube2" parent="." instance=ExtResource("1_bo1nx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.008350611, 0.0066177845, 0.00044250488)
+script = ExtResource("2_8gbba")

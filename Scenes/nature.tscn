@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnwyiqs0cq07t"]
+
+[ext_resource type="PackedScene" uid="uid://g2w2608bc2dy" path="res://Models/cloud.glb" id="1_i8r6c"]
+[ext_resource type="Script" uid="uid://bqmahs16hwies" path="res://Scripts/cloud-color-changer.gd" id="2_smi8r"]
+
+[node name="Models" type="Node3D"]
+
+[node name="cube2" parent="." instance=ExtResource("1_i8r6c")]
+script = ExtResource("2_smi8r")

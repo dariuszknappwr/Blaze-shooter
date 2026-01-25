@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv7ak0dldsqxt"]
+
+[ext_resource type="PackedScene" uid="uid://g2w2608bc2dy" path="res://Models/cloud.glb" id="1_4rphk"]
+[ext_resource type="Script" uid="uid://bqmahs16hwies" path="res://Scripts/cloud-color-changer.gd" id="2_b3oxr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b3oxr"]
+
+[node name="cube2" instance=ExtResource("1_4rphk")]
+
+[node name="cube" parent="." index="0"]
+transparency = 0.31
+surface_material_override/0 = SubResource("StandardMaterial3D_b3oxr")
+script = ExtResource("2_b3oxr")
