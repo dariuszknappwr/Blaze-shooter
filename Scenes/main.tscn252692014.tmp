@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://w47h8kxhiq20"]
+
+[ext_resource type="Script" uid="uid://c3gt5jl64y1jf" path="res://Scripts/View/GridView.gd" id="4_jjvhh"]
+
+[node name="Main" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4035313, 1.4965947)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="GridView" type="Node" parent="."]
+script = ExtResource("4_jjvhh")

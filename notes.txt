@@ -1,0 +1,1 @@
+Cell.gd musi mieć opcję wybierania koloru

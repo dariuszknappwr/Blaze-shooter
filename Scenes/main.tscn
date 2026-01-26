@@ -1,12 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=3 format=3 uid="uid://w47h8kxhiq20"]
 
-[ext_resource type="PackedScene" uid="uid://bv7ak0dldsqxt" path="res://cloud.tscn" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://c3gt5jl64y1jf" path="res://Scripts/View/GridView.gd" id="4_jjvhh"]
 
 [node name="Main" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4035313, 1.4965947)
+transform = Transform3D(1, 0, 0, 0, 0.70023674, 0.71391064, 0, -0.71391064, 0.7002368, 0, 9.655034, 13.752723)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+shadow_opacity = 0.82
 
-[node name="Cloud" parent="." instance=ExtResource("1_jjgbg")]
+[node name="GridView" type="Node" parent="."]
+script = ExtResource("4_jjvhh")
+standard_cell_view = ExtResource("2_bo1nx")
