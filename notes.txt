@@ -1,1 +1,4 @@
 Cell.gd musi mieć opcję wybierania koloru
+gridview powinno mieć opcję generowania cellów według obrazka/tekstu
+powinna być klasas conveyor belt i klasa shooter
+colory powinny być niezależne od grod_loader

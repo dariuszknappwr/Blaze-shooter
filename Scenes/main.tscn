@@ -14,4 +14,4 @@ shadow_opacity = 0.82
 
 [node name="GridView" type="Node" parent="."]
 script = ExtResource("4_jjvhh")
-standard_cell_view = ExtResource("2_bo1nx")
+cell_view_scene = ExtResource("2_bo1nx")
