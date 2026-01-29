@@ -9,3 +9,4 @@
 *.godot
 *.mono/
 *.mono_build/
+*.uid

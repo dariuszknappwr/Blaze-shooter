@@ -3,9 +3,6 @@ class_name ColorController
 
 @export var legend: GridLegend
 
-func _ready():
-	print("Color Controller Ready")
-
 func map_char_to_color(character: String) -> Color:
 	if not legend:
 		push_error("ColorController: legend not assigned in Inspector!")

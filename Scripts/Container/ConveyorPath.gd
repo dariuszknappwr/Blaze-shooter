@@ -1,6 +1,5 @@
 extends RefCounted
 class_name ConveyorPath
-@export var speed: float
 enum Edge { BOTTOM, RIGHT, TOP, LEFT }
 
 class Step:

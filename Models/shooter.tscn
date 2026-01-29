@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://oxw5asvujpy"]
 
-[ext_resource type="Script" uid="uid://fd5ysuvvhs2u" path="res://Scripts/ViewModel/ShooterView.gd" id="1_g72d6"]
+[ext_resource type="Script" uid="uid://fd5ysuvvhs2u" path="res://Scripts/View/ShooterView.gd" id="1_g72d6"]
 [ext_resource type="Script" uid="uid://bu5wlhnmtwknd" path="res://Scripts/Data/GridConfig.gd" id="2_qt8dg"]
 [ext_resource type="Resource" uid="uid://byo553blo0asw" path="res://Resources/default_legend.tres" id="3_qdjya"]
 

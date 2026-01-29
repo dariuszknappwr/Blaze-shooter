@@ -34,8 +34,7 @@ func _ready():
 	
 	grid_view.set_grid(grid, color_controller)
 	
+	var shooter_symbols = ["0","1","1","2","0"]
 	var path = ConveyorPath.new().build(grid.width, grid.length)
-	
-	shooter_manager.spawn_shooter("0", path)
-	shooter_manager.spawn_shooter("1", path)
+	shooter_manager.spawn_shooters(shooter_symbols, path)
 	
