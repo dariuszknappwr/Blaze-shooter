@@ -11,17 +11,16 @@ class_name ShooterManager
 var shooters: Array[Shooter] = []
 var shooter_views: Array[ShooterView] = []
 
-var shooter_rack: Array = []
+var rack: Rack
 
-var shooters_on_conveyor: Array[Shooter] = []
+#var shooters_on_conveyor: Array[Shooter] = []
 var shooters_in_reserve: Array[Shooter] = []
 
 var conveyor_path: Array
 
-func spawn_shooters(shooter_symbols: Array, path: Array):
-	_create_rack()
-	
+func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack):
 	conveyor_path = path
+	rack = shooter_rack
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
@@ -36,50 +35,38 @@ func spawn_shooters(shooter_symbols: Array, path: Array):
 			0,
 			row * grid_config.cell_size
 		)
-		shooter_rack[col].append(shooter)
+		rack.add_shooter(shooter, col)
 		
 		view.position = rack_pos
 		view.target_position = rack_pos
 
-func try_place_shooter_on_conveyor(shooter: Shooter) -> bool:
-	for col in shooter_rack:
-		if col.size() > 0 and col[col.size() -1] == shooter:
-			if shooters_on_conveyor.size() >= max_conveyor_shooters:
-				push_warning("Conveyor full")
-				return false
-			
-			col.pop_back()
-			shooters_on_conveyor.append(shooters)
-			return true
-	push_warning("Shooter nie jest na szczycie kolumny")
-	return false
 
-func update_conveyor(delta:float):
-	for shooter in shooters_on_conveyor:
-		var step = shooter.current_step()
-		var target_pos = Vector3(
-			step.grid_pos.x * grid_config.cell_size,
-			0,
-			step.grid_pos.y * grid_config.cell_size
-		)
-		
-		var view = shooter.view
-		view.gloval_position = view.gloval_position.linear_interpolate(target_pos, delta * conveyor_speed)
-		
-		if not shooter.has_shot_this_step:
-			var target = shooter.find_target(grid_config.grid)
-			if target != Vector2i(-1,-1):
-				grid_config.grid.get_cell(target.x, target.y).hit()
-			shooter.has_shot_this_step = true
+#func update_conveyor(delta:float):
+	#for shooter in shooters_on_conveyor:
+		#var step = shooter.current_step()
+		#var target_pos = Vector3(
+			#step.grid_pos.x * grid_config.cell_size,
+			#0,
+			#step.grid_pos.y * grid_config.cell_size
+		#)
+		#
+		#var view = shooter.view
+		#view.gloval_position = view.gloval_position.linear_interpolate(target_pos, delta * conveyor_speed)
+		#
+		#if not shooter.has_shot_this_step:
+			#var target = shooter.find_target(grid_config.grid)
+			#if target != Vector2i(-1,-1):
+				#grid_config.grid.get_cell(target.x, target.y).hit()
+			#shooter.has_shot_this_step = true
 
-func check_full_rotation():
-	for shooter in shooters_on_conveyor.duplicate():
-		if shooter.path_index == 0:
-			shooters_on_conveyor.erase(shooter)
-			if shooters_in_reserve.size()>=5:
-				push_error("GAMEOVER")
-			else:
-				shooters_in_reserve.append(shooter)
+#func check_full_rotation():
+	#for shooter in shooters_on_conveyor.duplicate():
+		#if shooter.path_index == 0:
+			#shooters_on_conveyor.erase(shooter)
+			#if shooters_in_reserve.size()>=5:
+				#push_error("GAMEOVER")
+			#else:
+				#shooters_in_reserve.append(shooter)
 
 func create_shooter(symbol):
 	var shooter = Shooter.new(symbol, 10, conveyor_path)
@@ -98,10 +85,3 @@ func create_shooter_view(shooter: Shooter):
 
 func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
 	return conveyor_path[shooter.path_index]
-
-func _create_rack():
-	shooter_rack.clear()
-	shooter_rack.resize(rack_columns)
-	
-	for col in range(rack_columns):
-		shooter_rack[col] = []
