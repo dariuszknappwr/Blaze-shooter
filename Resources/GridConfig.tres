@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GridConfig" load_steps=2 format=3 uid="uid://bwubhfgt2p8tq"]
+
+[ext_resource type="Script" uid="uid://bu5wlhnmtwknd" path="res://Scripts/Data/GridConfig.gd" id="1_12fhp"]
+
+[resource]
+script = ExtResource("1_12fhp")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"

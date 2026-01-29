@@ -1,7 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=12 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
-[ext_resource type="Script" uid="uid://c3gt5jl64y1jf" path="res://Scripts/View/GridView.gd" id="4_jjvhh"]
+[ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
+[ext_resource type="Script" uid="uid://c3gt5jl64y1jf" path="res://Scripts/ViewModel/GridView.gd" id="4_jjvhh"]
+[ext_resource type="Resource" uid="uid://byo553blo0asw" path="res://Resources/default_legend.tres" id="4_kry3j"]
+[ext_resource type="Script" uid="uid://bu5wlhnmtwknd" path="res://Scripts/Data/GridConfig.gd" id="6_21xkr"]
+[ext_resource type="Script" uid="uid://g6yqee1hse0m" path="res://Scripts/Controller/ShooterManager.gd" id="6_344ge"]
+[ext_resource type="PackedScene" uid="uid://oxw5asvujpy" path="res://Models/shooter.tscn" id="7_ynf5e"]
+[ext_resource type="Script" uid="uid://ov4rieg0a4il" path="res://Scripts/Controller/ColorController.gd" id="8_ynf5e"]
+
+[sub_resource type="Resource" id="Resource_kry3j"]
+script = ExtResource("6_21xkr")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
+
+[sub_resource type="Resource" id="Resource_21xkr"]
+script = ExtResource("6_21xkr")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
+
+[sub_resource type="Resource" id="Resource_6bp64"]
+script = ExtResource("6_21xkr")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
 
 [node name="Main" type="Node3D"]
 
@@ -15,3 +33,24 @@ shadow_opacity = 0.82
 [node name="GridView" type="Node" parent="."]
 script = ExtResource("4_jjvhh")
 cell_view_scene = ExtResource("2_bo1nx")
+grid_config = SubResource("Resource_kry3j")
+
+[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller")]
+script = ExtResource("3_jjvhh")
+map_path = null
+legend = ExtResource("4_kry3j")
+grid_view = NodePath("../GridView")
+grid_config = SubResource("Resource_21xkr")
+shooter_manager = NodePath("../ShooterManager")
+color_controller = NodePath("../ColorController")
+metadata/_custom_type_script = "uid://bd35n1nt0077u"
+
+[node name="ShooterManager" type="Node3D" parent="."]
+script = ExtResource("6_344ge")
+shooter_scene = ExtResource("7_ynf5e")
+grid_config = SubResource("Resource_6bp64")
+
+[node name="ColorController" type="Node3D" parent="."]
+script = ExtResource("8_ynf5e")
+legend = ExtResource("4_kry3j")
+metadata/_custom_type_script = "uid://ov4rieg0a4il"

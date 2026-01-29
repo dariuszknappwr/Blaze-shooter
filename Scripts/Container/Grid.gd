@@ -20,16 +20,16 @@ func _generate_empty_grid():
 		_values.append(row)
 
 func set_cell(x: int, y: int, cell: Cell) -> void:
-	if not _in_bounds(x, y):
+	if not in_bounds(Vector2i(x, y)):
 		push_error("Grid.set_cell: out of bounds (%d, %d)" % [x,y])
 		return
 	_values[y][x] = cell
 
 func get_cell(x: int, y:int) -> Cell:
-	if not _in_bounds(x, y):
+	if not in_bounds(Vector2i(x, y)):
 		push_error("Grid.get_cell: out of bounds (%d, %d)" % [x,y])
 		return
 	return _values[y][x]
 
-func _in_bounds(x: int, y: int) -> bool:
-	return x >= 0 and x < width and y >= 0 and y < length
+func in_bounds(pos: Vector2i) -> bool:
+	return pos.x >= 0 and pos.x < width and pos.y >= 0 and pos.y < length

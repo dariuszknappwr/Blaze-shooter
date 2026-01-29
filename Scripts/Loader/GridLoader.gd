@@ -21,21 +21,12 @@ func load_from_file(path: String) -> Grid:
 		for x in range(line.length()):
 			var character = line[x]
 			var cell = Cell.new()
-			cell.color = _map_char_to_color(character)
+			cell.color_symbol = character
 			grid.set_cell(x,y,cell)
 	
 	return grid
 
-func _map_char_to_color(character: String) -> Color:
-	match character:
-		"0":
-			return Color(0.35, 0.525, 0.867, 1.0)
-		"1":
-			return Color.BLACK
-		"2":
-			return Color.RED
-		_:
-			return Color.MAGENTA
+
 
 func _trim_empty_lines(lines: Array[String]) -> Array[String]:
 	var result: Array[String] = []

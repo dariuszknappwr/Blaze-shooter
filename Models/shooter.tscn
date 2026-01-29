@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://oxw5asvujpy"]
+
+[ext_resource type="Script" uid="uid://fd5ysuvvhs2u" path="res://Scripts/ViewModel/ShooterView.gd" id="1_g72d6"]
+[ext_resource type="Script" uid="uid://bu5wlhnmtwknd" path="res://Scripts/Data/GridConfig.gd" id="2_qt8dg"]
+[ext_resource type="Resource" uid="uid://byo553blo0asw" path="res://Resources/default_legend.tres" id="3_qdjya"]
+
+[sub_resource type="Resource" id="Resource_6bp64"]
+script = ExtResource("2_qt8dg")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
+
+[sub_resource type="PrismMesh" id="PrismMesh_qt8dg"]
+
+[node name="Shooter" type="Node3D"]
+script = ExtResource("1_g72d6")
+grid_config = SubResource("Resource_6bp64")
+legend = ExtResource("3_qdjya")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PrismMesh_qt8dg")

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GridLegend" load_steps=2 format=3 uid="uid://byo553blo0asw"]
+
+[ext_resource type="Script" uid="uid://c5ghdh80y28jy" path="res://Scripts/Data/GridLegend.gd" id="1_i2m4x"]
+
+[resource]
+script = ExtResource("1_i2m4x")
+char_to_color = {
+"0": Color(0.1196669, 0.34108728, 0.4913239, 1),
+"1": Color(0.80049086, 0.80049074, 0.80049074, 1),
+"2": Color(4.3317675e-07, 0.55858564, 0.3621975, 1)
+}
+metadata/_custom_type_script = "uid://c5ghdh80y28jy"
