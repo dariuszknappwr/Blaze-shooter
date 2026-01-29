@@ -10,17 +10,15 @@ class_name ShooterManager
 
 var shooters: Array[Shooter] = []
 var shooter_views: Array[ShooterView] = []
-
 var rack: Rack
-
-#var shooters_on_conveyor: Array[Shooter] = []
-var shooters_in_reserve: Array[Shooter] = []
-
+var bench
+var conveyor_path_obj: ConveyorPath
 var conveyor_path: Array
 
-func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack):
+func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack, bench_data: Bench):
 	conveyor_path = path
 	rack = shooter_rack
+	bench = bench_data
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
@@ -39,6 +37,19 @@ func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack):
 		
 		view.position = rack_pos
 		view.target_position = rack_pos
+
+func connect_conveyor_signals(conveyor: ConveyorPath):
+	conveyor_path_obj = conveyor
+	conveyor.shooter_added_to_conveyor.connect(_on_shooter_added_to_conveyor)
+	conveyor.conveyor_full.connect(_on_conveyor_full)
+	conveyor.shooter_completed_rotation.connect(_on_shooter_completed_rotation)
+
+func _on_shooter_added_to_conveyor(shooter: Shooter):
+	print("Shooter added to conveyor: ", shooter.color_symbol)
+	# ShooterManager can now invoke Bench methods if needed
+
+func _on_conveyor_full():
+	print("Conveyor is full! Game might need to handle this")
 
 
 #func update_conveyor(delta:float):
@@ -85,3 +96,6 @@ func create_shooter_view(shooter: Shooter):
 
 func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
 	return conveyor_path[shooter.path_index]
+
+func _on_shooter_completed_rotation(shooter: Shooter):
+	bench.add_shooter(shooter)

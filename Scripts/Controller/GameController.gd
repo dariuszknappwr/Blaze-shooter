@@ -7,8 +7,9 @@ class_name GameController
 @export var grid_config: GridConfig
 @export var shooter_manager: ShooterManager
 @export var color_controller: ColorController
-var path: ConveyorPath
+var conveyor: ConveyorPath
 var rack: Rack
+var bench: Bench
 
 func _ready():
 	check_errors()
@@ -22,11 +23,13 @@ func _ready():
 	
 	grid_view.set_grid(grid, color_controller)
 	rack = Rack.new()
-	path = ConveyorPath.new(rack)
-	var pathArray = path.get_steps(grid)
+	conveyor = ConveyorPath.new(rack)
+	shooter_manager.connect_conveyor_signals(conveyor)
+	bench = Bench.new()
+	var pathArray = conveyor.get_steps(grid)
 	
 	var shooter_symbols = ["0","1","1","2","0"]
-	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack)
+	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack, bench)
 
 func check_errors():
 	if not legend:

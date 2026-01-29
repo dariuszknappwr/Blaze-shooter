@@ -15,6 +15,10 @@ var max_conveyor_shooters := 5
 var grid: Grid
 var rack: Rack
 
+signal shooter_added_to_conveyor(shooter: Shooter)
+signal conveyor_full()
+signal shooter_completed_rotation(shooter: Shooter)
+
 func _init(shooter_rack: Rack):
 	rack = shooter_rack
 
@@ -63,15 +67,28 @@ func get_steps(grid_data: Grid) -> Array[Step]:
 func get_size():
 	return steps.size()
 
+func get_next_step(shooter: Shooter):
+	var next_step = shooter.path_index + 1
+	var out_of_array = next_step > steps.size()
+	if out_of_array:
+		shooter_completed_rotation.emit(shooter)
+		return
+	shooter.advance()
+	
+		
+	
+
 func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 	for col in rack:
 		if col.size() > 0 and col[col.size() -1] == shooter:
 			if shooters_on_conveyor.size() >= max_conveyor_shooters:
+				conveyor_full.emit()
 				push_warning("Conveyor full")
 				return false
 			
 			col.pop_back()
 			shooters_on_conveyor.append(shooter)
+			shooter_added_to_conveyor.emit(shooter)
 			return true
 	push_warning("Shooter is not on the top of a column")
 	return false

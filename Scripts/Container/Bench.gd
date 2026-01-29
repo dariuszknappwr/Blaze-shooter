@@ -10,8 +10,15 @@ func add_shooter(shooter: Shooter):
 		return
 	slots.append(shooter)
 
-#func pop_shooter(shooter: Shooter):
-	#slots.pop
-#
-#func get_bench_column(shooter: Shooter):
-	#slots.get(shooter)
+func pop_shooter(shooter: Shooter) -> bool:
+	var index = slots.find(shooter)
+	if index != -1:
+		slots.remove_at(index)
+		return true
+	return false
+
+func get_shooter_index(shooter: Shooter) -> int:
+	return slots.find(shooter)
+
+func get_bench_column(shooter: Shooter) -> int:
+	return slots.find(shooter)

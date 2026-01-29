@@ -37,6 +37,7 @@ grid_config = SubResource("Resource_kry3j")
 
 [node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller")]
 script = ExtResource("3_jjvhh")
+map_path = null
 legend = ExtResource("4_kry3j")
 grid_view = NodePath("../GridView")
 grid_config = SubResource("Resource_21xkr")
