@@ -1,5 +1,6 @@
 extends RefCounted
 class_name ConveyorPath
+
 enum Edge { BOTTOM, RIGHT, TOP, LEFT }
 
 class Step:
@@ -7,8 +8,12 @@ class Step:
 	var edge: Edge
 	var shoot_dir: Vector2i
 
-func build(width: int, height: int) -> Array[Step]:
-	var steps: Array[Step] = []
+var steps: Array[Step] = []
+var speed := 1.0
+
+func get_steps(width: int, height: int) -> Array[Step]:
+	if !steps.is_empty():
+		return steps
 	
 	# BOTTOM (x: 0 -> width-1, y = height)
 	for x in range(width):
@@ -43,3 +48,6 @@ func build(width: int, height: int) -> Array[Step]:
 		steps.append(s)
 	
 	return steps
+
+func get_size():
+	return steps.size()

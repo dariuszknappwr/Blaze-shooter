@@ -54,3 +54,5 @@ color_controller = NodePath("../ColorController")
 script = ExtResource("8_ynf5e")
 legend = ExtResource("4_kry3j")
 metadata/_custom_type_script = "uid://ov4rieg0a4il"
+
+[node name="ConveyorPathView" type="Node3D" parent="."]

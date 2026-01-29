@@ -16,38 +16,30 @@ var shooter_rack: Array = []
 var shooters_on_conveyor: Array[Shooter] = []
 var shooters_in_reserve: Array[Shooter] = []
 
-func spawn_shooters(shooter_symbols: Array,path: Array):
-	shooter_rack.clear()
-	shooter_rack.resize(rack_columns)
+var conveyor_path: Array
+
+func spawn_shooters(shooter_symbols: Array, path: Array):
+	_create_rack()
 	
-	for col in range(rack_columns):
-		shooter_rack[col] = []
+	conveyor_path = path
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
+		var shooter = create_shooter(color_symbol)
+		var view = create_shooter_view(shooter)
 		
-		var shooter = Shooter.new()
-		shooter.color_symbol = color_symbol
-		shooter.path = path
-		shooters.append(shooter)
-	
-		var view = shooter_scene.instantiate() as ShooterView
-		view.grid_config = grid_config
-		view.color_controller = color_controller
-		view.setup(shooter)
-		add_child(view)
-		view.initialize_position()
-		
-		shooter_views.append(view)
 		
 		var col = i % rack_columns
 		var row = i / rack_columns
-		shooter_rack[col].append(shooter)
-		
-		view.position = Vector3(
+		var rack_pos = Vector3(
 			col * grid_config.cell_size,
 			0,
-			row * grid_config.cell_size)
+			row * grid_config.cell_size
+		)
+		shooter_rack[col].append(shooter)
+		
+		view.position = rack_pos
+		view.target_position = rack_pos
 
 func try_place_shooter_on_conveyor(shooter: Shooter) -> bool:
 	for col in shooter_rack:
@@ -88,3 +80,28 @@ func check_full_rotation():
 				push_error("GAMEOVER")
 			else:
 				shooters_in_reserve.append(shooter)
+
+func create_shooter(symbol):
+	var shooter = Shooter.new(symbol, 10, conveyor_path)
+	shooters.append(shooter)
+	return shooter
+
+func create_shooter_view(shooter: Shooter):
+	var view = shooter_scene.instantiate() as ShooterView
+	view.grid_config = grid_config
+	view.color_controller = color_controller
+	view.setup(shooter)
+	add_child(view)
+	view.initialize_position()
+	shooter_views.append(view)
+	return view
+
+func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
+	return conveyor_path[shooter.path_index]
+
+func _create_rack():
+	shooter_rack.clear()
+	shooter_rack.resize(rack_columns)
+	
+	for col in range(rack_columns):
+		shooter_rack[col] = []

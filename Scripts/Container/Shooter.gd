@@ -4,8 +4,13 @@ class_name Shooter
 
 var number_of_bullets: int
 var color_symbol : String
-var path: Array
 var path_index := 0
+var path : Array
+
+func _init(symbol: String, bullets: int, path_array: Array):
+	color_symbol = symbol
+	number_of_bullets = bullets
+	path = path_array
 
 func advance():
 	path_index = (path_index + 1) % path.size()

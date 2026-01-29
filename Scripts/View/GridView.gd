@@ -4,8 +4,6 @@ class_name GridView
 
 @export var cell_view_scene : PackedScene
 @export var grid_config: GridConfig
-var width
-var length
 var grid : Grid
 var gridNode : Node
 

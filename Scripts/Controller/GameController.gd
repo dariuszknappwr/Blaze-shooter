@@ -7,8 +7,26 @@ class_name GameController
 @export var grid_config: GridConfig
 @export var shooter_manager: ShooterManager
 @export var color_controller: ColorController
+var path: ConveyorPath
 
 func _ready():
+	check_errors()
+	
+	var loader = GridLoader.new()
+	
+	var grid = loader.load_from_file(map_path)
+	if grid == null:
+		push_error("GameController: failed to load grid from file")
+		return
+	
+	grid_view.set_grid(grid, color_controller)
+	path = ConveyorPath.new()
+	var pathArray = path.get_steps(grid.width, grid.length)
+	
+	var shooter_symbols = ["0","1","1","2","0"]
+	shooter_manager.spawn_shooters(shooter_symbols, pathArray)
+
+func check_errors():
 	if not legend:
 		push_error("GameController: legend is not assigned!")
 		return
@@ -24,17 +42,3 @@ func _ready():
 	if not color_controller:
 		push_error("GameController: color_controller is not assigned")
 		return
-	
-	var loader = GridLoader.new()
-	
-	var grid = loader.load_from_file(map_path)
-	if grid == null:
-		push_error("GameController: failed to load grid from file")
-		return
-	
-	grid_view.set_grid(grid, color_controller)
-	
-	var shooter_symbols = ["0","1","1","2","0"]
-	var path = ConveyorPath.new().build(grid.width, grid.length)
-	shooter_manager.spawn_shooters(shooter_symbols, path)
-	
