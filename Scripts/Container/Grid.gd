@@ -33,3 +33,8 @@ func get_cell(x: int, y:int) -> Cell:
 
 func in_bounds(pos: Vector2i) -> bool:
 	return pos.x >= 0 and pos.x < width and pos.y >= 0 and pos.y < length
+
+func get_cell_safe(x: int, y: int) -> Cell:
+	if not in_bounds(Vector2i(x,y)):
+		return null
+	return _values[y][x]
