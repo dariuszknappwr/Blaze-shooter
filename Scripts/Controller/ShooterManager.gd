@@ -10,9 +10,6 @@ class_name ShooterManager
 @export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
 
 var conveyor: ConveyorPath
-
-var shooters: Array[Shooter] = []
-var shooter_views: Array[ShooterView] = []
 var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
@@ -65,13 +62,11 @@ func _update_shooter_view():
 func create_shooter(symbol: String, bullets: int, column: int):
 	var shooter = Shooter.new(symbol, bullets, path)
 	rack.add_shooter(shooter, column)
-	shooters.append(shooter)
 	return shooter
 
 func create_shooter_view(shooter: Shooter):
 	var view = ShooterViewFactory.create_shooter_view(shooter, shooter_scene, grid_config, color_controller, Callable(self, "_on_shooter_clicked"))
 	add_child(view)
-	shooter_views.append(view)
 	shooter_container_views[shooter] = view
 	return view
 
@@ -86,5 +81,5 @@ func _on_shooter_clicked(shooter):
 	conveyor.try_put_shooter_on_conveyor(shooter)
 
 func update_rack_view() -> void:
-	for i in range(shooters.size()):
+	for i in range(shooter_container_views.keys().size()):
 		rackView.update_view(i)
