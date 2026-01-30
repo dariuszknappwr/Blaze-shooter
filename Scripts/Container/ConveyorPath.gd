@@ -79,7 +79,7 @@ func get_next_step(shooter: Shooter):
 	
 
 func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
-	for col in rack:
+	for col in rack.slots:
 		if col.size() > 0 and col[col.size() -1] == shooter:
 			if shooters_on_conveyor.size() >= max_conveyor_shooters:
 				conveyor_full.emit()

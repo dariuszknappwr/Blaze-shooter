@@ -32,7 +32,7 @@ func _ready():
 	rackView.setup(rack)
 	
 	var shooter_symbols = ["0","1","1","2","0","1","2","0","0","1"]
-	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack, bench)
+	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack, bench, conveyor)
 	for i in shooter_symbols.size():
 		rackView.update_view(i)
 

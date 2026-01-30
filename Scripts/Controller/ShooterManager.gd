@@ -7,6 +7,7 @@ class_name ShooterManager
 @export var conveyor_speed := 2.0
 @export var color_controller: ColorController
 @export var rackView: RackView
+var conveyor: ConveyorPath
 
 var shooters: Array[Shooter] = []
 var shooter_views: Array[ShooterView] = []
@@ -14,16 +15,18 @@ var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
 var conveyor_path_obj: ConveyorPath
-var conveyor_path: Array
+var path: Array
+var conveyorPath: ConveyorPath
 
 func _ready():
 	_update_shooter_view()
 		
 
-func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack, bench_data: Bench):
-	conveyor_path = path
+func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
+	path = path_
 	rack = shooter_rack
 	bench = bench_data
+	conveyorPath = conveyorPath_
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
@@ -57,7 +60,7 @@ func _update_shooter_view():
 		view.set_position(rootPos + pos3D * grid_config.cell_size)
 
 func create_shooter(symbol: String, bullets: int, column: int):
-	var shooter = Shooter.new(symbol, bullets, conveyor_path)
+	var shooter = Shooter.new(symbol, bullets, path)
 	rack.add_shooter(shooter, column)
 	shooters.append(shooter)
 	return shooter
@@ -67,13 +70,18 @@ func create_shooter_view(shooter: Shooter):
 	view.grid_config = grid_config
 	view.color_controller = color_controller
 	view.setup(shooter)
+	view.clicked.connect(_on_shooter_clicked)
 	add_child(view)
 	shooter_views.append(view)
 	shooter_container_views[shooter] = view
 	return view
 
 func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
-	return conveyor_path[shooter.path_index]
+	return path[shooter.path_index]
 
 func _on_shooter_completed_rotation(shooter: Shooter):
 	bench.add_shooter(shooter)
+
+func _on_shooter_clicked(shooter):
+	print(shooter.color_symbol)
+	conveyorPath.try_put_shooter_on_conveyor(shooter)
