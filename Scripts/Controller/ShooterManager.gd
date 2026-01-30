@@ -7,6 +7,8 @@ class_name ShooterManager
 @export var conveyor_speed := 2.0
 @export var color_controller: ColorController
 @export var rackView: RackView
+@export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
+
 var conveyor: ConveyorPath
 
 var shooters: Array[Shooter] = []
@@ -32,6 +34,9 @@ func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, be
 		var color_symbol = shooter_symbols[i]
 		var shooter = create_shooter(color_symbol, i, i)
 		var view = create_shooter_view(shooter)
+
+func spawn_default_shooters(path, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
+	spawn_shooters(default_shooter_symbols, path, shooter_rack, bench_data, conveyorPath_)
 
 func connect_signals(conveyor: ConveyorPath, rack_data: Rack):
 	conveyor_path_obj = conveyor

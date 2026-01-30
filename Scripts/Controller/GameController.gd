@@ -13,7 +13,8 @@ var bench: Bench
 @export var rackView: RackView
 
 func _ready():
-	check_errors()
+	if not GameControllerValidator.validate(self):
+		return
 	
 	var loader = GridLoader.new()
 	
@@ -31,24 +32,6 @@ func _ready():
 	
 	rackView.setup(rack)
 	
-	var shooter_symbols = ["0","1","1","2","0","1","2","0","0","1"]
-	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack, bench, conveyor)
-	for i in shooter_symbols.size():
+	shooter_manager.spawn_default_shooters(pathArray, rack, bench, conveyor)
+	for i in shooter_manager.default_shooter_symbols.size():
 		rackView.update_view(i)
-
-func check_errors():
-	if not legend:
-		push_error("GameController: legend is not assigned!")
-		return
-	if not grid_view:
-		push_error("GameController: grid_view is not assigned!")
-		return
-	if not grid_config:
-		push_error("GameController: grid_config is not assigned")
-		return
-	if not shooter_manager:
-		push_error("GameController: shooter_manager is not assigned")
-		return
-	if not color_controller:
-		push_error("GameController: color_controller is not assigned")
-		return
