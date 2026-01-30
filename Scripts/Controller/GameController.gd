@@ -33,4 +33,3 @@ func _ready():
 	rackView.setup(rack)
 	
 	shooter_manager.spawn_default_shooters(pathArray, rack, bench, conveyor)
-	shooter_manager.update_rack_view(rackView)
