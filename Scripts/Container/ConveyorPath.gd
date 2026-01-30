@@ -32,37 +32,28 @@ func get_steps(grid_data: Grid) -> Array[Step]:
 	
 	# BOTTOM (x: 0 -> width-1, y = height)
 	for x in range(width):
-		var s = Step.new()
-		s.grid_pos = Vector2i(x, height)
-		s.edge = Edge.BOTTOM
-		s.shoot_dir = Vector2i(0, -1)
-		steps.append(s)
+		steps.append(_create_step(Vector2i(x, height), Edge.BOTTOM, Vector2i(0,-1)))
 	
 	# RIGHT (y: height-1 -> 0, x = width)
 	for y in range(height -1, -1, -1):
-		var s = Step.new()
-		s.grid_pos = Vector2i(width, y)
-		s.edge = Edge.RIGHT
-		s.shoot_dir = Vector2i(-1, 0)
-		steps.append(s)
+		steps.append(_create_step(Vector2i(width,y), Edge.RIGHT, Vector2i(-1,0)))
 	
 	# TOP (x: width-1 -> 0, y = -1)
 	for x in range(width -1, -1, -1):
-		var s = Step.new()
-		s.grid_pos = Vector2i(x, -1)
-		s.edge = Edge.TOP
-		s.shoot_dir = Vector2i(0,1)
-		steps.append(s)
+		steps.append(_create_step(Vector2i(x,-1), Edge.TOP, Vector2i(0,1)))
 	
 	# Left (x = -1, y: 0 -> height-1)
 	for y in range(height):
-		var s = Step.new()
-		s.grid_pos = Vector2i(-1, y)
-		s.edge = Edge.LEFT
-		s.shoot_dir = Vector2i(1,0)
-		steps.append(s)
+		steps.append(_create_step(Vector2i(-1,y), Edge.LEFT, Vector2i(1,0)))
 	
 	return steps
+
+func _create_step(grid_pos: Vector2i, edge: Edge, shoot_dir: Vector2i) -> Step:
+	var s = Step.new()
+	s.grid_pos = grid_pos
+	s.edge = edge
+	s.shoot_dir = shoot_dir
+	return s
 
 func get_size():
 	return steps.size()
