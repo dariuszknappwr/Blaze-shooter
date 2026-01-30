@@ -28,6 +28,7 @@ func _ready():
 	conveyor = ConveyorPath.new(rack)
 	shooter_manager.connect_signals(conveyor, rack)
 	bench = Bench.new()
+	shooter_manager.shooter_sent_to_bench.connect(bench.add_shooter)
 	var pathArray = conveyor.get_steps(grid)
 	
 	rackView.setup(rack)

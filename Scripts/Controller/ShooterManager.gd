@@ -14,6 +14,7 @@ var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
 var path: Array
+signal shooter_sent_to_bench(shooter: Shooter)
 
 
 func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
@@ -74,7 +75,7 @@ func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
 	return path[shooter.path_index]
 
 func _on_shooter_completed_rotation(shooter: Shooter):
-	bench.add_shooter(shooter)
+	shooter_sent_to_bench.emit(shooter)
 
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
