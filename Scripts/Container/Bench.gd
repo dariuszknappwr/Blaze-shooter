@@ -5,7 +5,7 @@ var max_size := 5
 var slots : Array = []
 
 func add_shooter(shooter: Shooter):
-	if slots.size() >= max_size:
+	if is_full():
 		push_error("Game Over!")
 		return
 	slots.append(shooter)
@@ -22,3 +22,6 @@ func get_shooter_index(shooter: Shooter) -> int:
 
 func get_bench_column(shooter: Shooter) -> int:
 	return slots.find(shooter)
+
+func is_full() -> bool:
+	return slots.size() >= max_size
