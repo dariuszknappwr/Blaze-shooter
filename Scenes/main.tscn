@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=15 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
@@ -23,12 +23,18 @@ metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
 script = ExtResource("6_21xkr")
 metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
 
+[sub_resource type="Resource" id="Resource_hptm8"]
+script = ExtResource("6_21xkr")
+metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
+
 [node name="Main" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.7002368, 0.71391064, 0, -0.7139107, 0.7002368, 0, 22.266548, 25.605278)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0)
+light_energy = 1.66
 shadow_enabled = true
 shadow_opacity = 0.82
 
@@ -65,3 +71,4 @@ metadata/_custom_type_script = "uid://ov4rieg0a4il"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 script = ExtResource("9_ynf5e")
 slot_scene = ExtResource("10_hptm8")
+grid_config = SubResource("Resource_hptm8")

@@ -13,8 +13,8 @@ func _init():
 		slots[col] = []
 
 func add_shooter(shooter: Shooter, column: int):
-	slots[column].append(shooter)
-	var position = get_slot_position(slots[column].size())
+	slots[column%number_of_columns].append(shooter)
+	var position = get_slot_position(slots[column%number_of_columns].size())
 	shooter_added_to_rack.emit(shooter, position)
 
 func get_shooter_position(shooter: Shooter) -> Vector2i:

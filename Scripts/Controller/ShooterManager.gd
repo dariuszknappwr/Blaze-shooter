@@ -27,18 +27,15 @@ func spawn_shooters(shooter_symbols: Array, path: Array, shooter_rack: Rack, ben
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
-		var shooter = create_shooter(color_symbol)
+		var shooter = create_shooter(color_symbol, i, i)
 		var view = create_shooter_view(shooter)
-		
-		var col = i % rack.number_of_columns
-		rack.add_shooter(shooter, col)
 
-func connect_signals(conveyor: ConveyorPath, rack: Rack):
+func connect_signals(conveyor: ConveyorPath, rack_data: Rack):
 	conveyor_path_obj = conveyor
 	conveyor.shooter_added_to_conveyor.connect(_on_shooter_added_to_conveyor)
 	conveyor.conveyor_full.connect(_on_conveyor_full)
 	conveyor.shooter_completed_rotation.connect(_on_shooter_completed_rotation)
-	rack.shooter_added_to_rack.connect(_on_shooter_added_to_rack)
+	rack_data.shooter_added_to_rack.connect(_on_shooter_added_to_rack)
 
 func _on_shooter_added_to_conveyor(shooter: Shooter):
 	print("Shooter added to conveyor: ", shooter.color_symbol)
@@ -56,11 +53,12 @@ func _update_shooter_view():
 		var view = shooter_container_views[shooter]
 		var pos2D = rack.get_shooter_position(shooter)
 		var pos3D = Vector3(pos2D.x, 0, pos2D.y)
-		view.set_position(rackView.get_rack_starting_position() + pos3D)
+		var rootPos = rackView.get_rack_starting_position()
+		view.set_position(rootPos + pos3D * grid_config.cell_size)
 
-func create_shooter(symbol):
-	var shooter = Shooter.new(symbol, 10, conveyor_path)
-	rack.add_shooter(shooter, 0)
+func create_shooter(symbol: String, bullets: int, column: int):
+	var shooter = Shooter.new(symbol, bullets, conveyor_path)
+	rack.add_shooter(shooter, column)
 	shooters.append(shooter)
 	return shooter
 

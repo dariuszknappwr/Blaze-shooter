@@ -17,15 +17,11 @@ func _ready() -> void:
 	if not grid_config:
 		push_error("ShooterView: Please fill grid_config in Inspector!")
 
-
 func setup(shooter_data: Shooter):
 	shooter = shooter_data
 	var color = color_controller.map_char_to_color(shooter.color_symbol)
 	_apply_color(color)
 	original_color = color
-	
-
-
 
 func _apply_color(color: Color):
 	for child in get_children():
