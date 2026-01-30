@@ -86,6 +86,7 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 	
 	if not rack.remove_shooter_from_top(shooter):
 		push_warning("Shooter is not on the top of a column")
+		return false
 	
 	shooters_on_conveyor.append(shooter)
 	shooter_added_to_conveyor.emit(shooter)
