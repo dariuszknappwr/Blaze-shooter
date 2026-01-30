@@ -71,11 +71,7 @@ func create_shooter(symbol: String, bullets: int, column: int):
 	return shooter
 
 func create_shooter_view(shooter: Shooter):
-	var view = shooter_scene.instantiate() as ShooterView
-	view.grid_config = grid_config
-	view.color_controller = color_controller
-	view.setup(shooter)
-	view.clicked.connect(_on_shooter_clicked)
+	var view = ShooterViewFactory.create_shooter_view(shooter, shooter_scene, grid_config, color_controller, Callable(self, "_on_shooter_clicked"))
 	add_child(view)
 	shooter_views.append(view)
 	shooter_container_views[shooter] = view

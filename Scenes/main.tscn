@@ -57,8 +57,11 @@ metadata/_custom_type_script = "uid://bd35n1nt0077u"
 script = ExtResource("6_344ge")
 shooter_scene = ExtResource("7_ynf5e")
 grid_config = SubResource("Resource_6bp64")
+max_conveyor_shooters = null
+conveyor_speed = null
 color_controller = NodePath("../ColorController")
 rackView = NodePath("../RackView")
+default_shooter_symbols = null
 
 [node name="ColorController" type="Node3D" parent="."]
 script = ExtResource("8_ynf5e")
