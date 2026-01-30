@@ -20,16 +20,4 @@ func current_step():
 
 func find_target(grid: Grid) -> Vector2i:
 	var step = current_step()
-	var pos = step.grid_pos + step.shoot_dir
-	
-	var no_target_found := Vector2(-1,-1)
-	
-	while grid.in_bounds(pos):
-		var cell = grid.get_cell(pos.x, pos.y)
-		if not cell.is_empty():
-			if cell.color_symbol != color_symbol:
-				return no_target_found
-			return pos
-		pos += step.shoot_dir
-	
-	return no_target_found
+	return ShooterTargetFinder.find_target_from_step(step, color_symbol, grid)
