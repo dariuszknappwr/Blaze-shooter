@@ -16,30 +16,27 @@ var shooter_views: Array[ShooterView] = []
 var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
-var conveyor_path_obj: ConveyorPath
 var path: Array
-var conveyorPath: ConveyorPath
 
-func _ready():
-	_update_shooter_view()
-		
 
 func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
 	path = path_
 	rack = shooter_rack
 	bench = bench_data
-	conveyorPath = conveyorPath_
+	conveyor = conveyorPath_
 	
 	for i in range(shooter_symbols.size()):
 		var color_symbol = shooter_symbols[i]
 		var shooter = create_shooter(color_symbol, i, i)
 		var view = create_shooter_view(shooter)
+	
+	_update_shooter_view()
 
 func spawn_default_shooters(path, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
 	spawn_shooters(default_shooter_symbols, path, shooter_rack, bench_data, conveyorPath_)
 
-func connect_signals(conveyor: ConveyorPath, rack_data: Rack):
-	conveyor_path_obj = conveyor
+func connect_signals(conveyorPath: ConveyorPath, rack_data: Rack):
+	conveyor = conveyorPath
 	conveyor.shooter_added_to_conveyor.connect(_on_shooter_added_to_conveyor)
 	conveyor.conveyor_full.connect(_on_conveyor_full)
 	conveyor.shooter_completed_rotation.connect(_on_shooter_completed_rotation)
@@ -85,7 +82,7 @@ func _on_shooter_completed_rotation(shooter: Shooter):
 
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
-	conveyorPath.try_put_shooter_on_conveyor(shooter)
+	conveyor.try_put_shooter_on_conveyor(shooter)
 
 func update_rack_view(rack_view: RackView) -> void:
 	for i in range(shooters.size()):

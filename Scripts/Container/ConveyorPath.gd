@@ -66,9 +66,6 @@ func get_next_step(shooter: Shooter):
 		return
 	shooter.advance()
 	
-		
-	
-
 func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 	if shooters_on_conveyor.size() >= max_conveyor_shooters:
 		conveyor_full.emit()
