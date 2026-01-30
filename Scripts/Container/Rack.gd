@@ -1,15 +1,30 @@
 extends RefCounted
 class_name Rack
 
-var shooters_on_rack: Array = []
+var slots: Array = []
 var number_of_columns := 4
+signal shooter_added_to_rack(shooter: Shooter, position: Vector3)
 
 func _init():
-	shooters_on_rack.clear()
-	shooters_on_rack.resize(number_of_columns)
+	slots.clear()
+	slots.resize(number_of_columns)
 	
 	for col in range(number_of_columns):
-		shooters_on_rack[col] = []
+		slots[col] = []
 
 func add_shooter(shooter: Shooter, column: int):
-	shooters_on_rack[column].append(shooter)
+	slots[column].append(shooter)
+	var position = get_slot_position(slots[column].size())
+	shooter_added_to_rack.emit(shooter, position)
+
+func get_shooter_position(shooter: Shooter) -> Vector2i:
+	for col in range(number_of_columns):
+		for row in range(slots[col].size()):
+			if slots[col][row] == shooter:
+				return Vector2i(col,row)
+	return Vector2i(-1,-1)
+
+func get_slot_position(i: int) -> Vector3:
+	var col = i % number_of_columns
+	var row = i / number_of_columns
+	return Vector3(col, 0, row)

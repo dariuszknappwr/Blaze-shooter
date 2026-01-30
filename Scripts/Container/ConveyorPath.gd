@@ -95,27 +95,9 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 
 func update_conveyor(delta:float):
 	for shooter in shooters_on_conveyor:
-		#var step = shooter.current_step()
-		#var position = Vector3(
-			#step.grid_pos.x * grid_config.cell_size,
-			#0,
-			#step.grid_pos.y * grid_config.cell_size
-		#)
-		#
-		#var view = shooter.view
-		#view.global_position = view.global_position.linear_interpolate(target_pos, delta * conveyor_speed)
 		
 		if not shooter.has_shot_this_step:
 			var target = shooter.find_target(grid)
 			if target != Vector2i(-1,-1):
 				grid.get_cell(target.x, target.y).hit()
 			shooter.has_shot_this_step = true
-
-#func check_full_rotation():
-	#for shooter in shooters_on_conveyor.duplicate():
-		#if shooter.path_index == 0:
-			#shooters_on_conveyor.erase(shooter)
-			#if shooters_on_bench.size()>=5:
-				#push_error("GAMEOVER")
-			#else:
-				#shooters_in_reserve.append(shooter)

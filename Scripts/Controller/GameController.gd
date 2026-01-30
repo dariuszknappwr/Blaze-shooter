@@ -10,6 +10,7 @@ class_name GameController
 var conveyor: ConveyorPath
 var rack: Rack
 var bench: Bench
+@export var rackView: RackView
 
 func _ready():
 	check_errors()
@@ -24,9 +25,11 @@ func _ready():
 	grid_view.set_grid(grid, color_controller)
 	rack = Rack.new()
 	conveyor = ConveyorPath.new(rack)
-	shooter_manager.connect_conveyor_signals(conveyor)
+	shooter_manager.connect_signals(conveyor, rack)
 	bench = Bench.new()
 	var pathArray = conveyor.get_steps(grid)
+	
+	rackView.setup(rack)
 	
 	var shooter_symbols = ["0","1","1","2","0"]
 	shooter_manager.spawn_shooters(shooter_symbols, pathArray, rack, bench)

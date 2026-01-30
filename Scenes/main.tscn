@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=14 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://g6yqee1hse0m" path="res://Scripts/Controller/ShooterManager.gd" id="6_344ge"]
 [ext_resource type="PackedScene" uid="uid://oxw5asvujpy" path="res://Models/shooter.tscn" id="7_ynf5e"]
 [ext_resource type="Script" uid="uid://ov4rieg0a4il" path="res://Scripts/Controller/ColorController.gd" id="8_ynf5e"]
+[ext_resource type="Script" uid="uid://couhn71fn4irt" path="res://Scripts/View/RackView.gd" id="9_ynf5e"]
+[ext_resource type="PackedScene" uid="uid://042ngtw65i8n" path="res://Models/bench_rack_slot.tscn" id="10_hptm8"]
 
 [sub_resource type="Resource" id="Resource_kry3j"]
 script = ExtResource("6_21xkr")
@@ -24,7 +26,7 @@ metadata/_custom_type_script = "uid://bu5wlhnmtwknd"
 [node name="Main" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.70023674, 0.71391064, 0, -0.71391064, 0.7002368, 0, 9.655034, 13.752723)
+transform = Transform3D(1, 0, 0, 0, 0.7002368, 0.71391064, 0, -0.7139107, 0.7002368, 0, 22.266548, 25.605278)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 shadow_enabled = true
@@ -35,21 +37,22 @@ script = ExtResource("4_jjvhh")
 cell_view_scene = ExtResource("2_bo1nx")
 grid_config = SubResource("Resource_kry3j")
 
-[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller")]
+[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller", "rackView")]
 script = ExtResource("3_jjvhh")
-map_path = null
 legend = ExtResource("4_kry3j")
 grid_view = NodePath("../GridView")
 grid_config = SubResource("Resource_21xkr")
 shooter_manager = NodePath("../ShooterManager")
 color_controller = NodePath("../ColorController")
+rackView = NodePath("../RackView")
 metadata/_custom_type_script = "uid://bd35n1nt0077u"
 
-[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller")]
+[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller", "rackView")]
 script = ExtResource("6_344ge")
 shooter_scene = ExtResource("7_ynf5e")
 grid_config = SubResource("Resource_6bp64")
 color_controller = NodePath("../ColorController")
+rackView = NodePath("../RackView")
 
 [node name="ColorController" type="Node3D" parent="."]
 script = ExtResource("8_ynf5e")
@@ -57,3 +60,8 @@ legend = ExtResource("4_kry3j")
 metadata/_custom_type_script = "uid://ov4rieg0a4il"
 
 [node name="ConveyorPathView" type="Node3D" parent="."]
+
+[node name="RackView" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
+script = ExtResource("9_ynf5e")
+slot_scene = ExtResource("10_hptm8")
