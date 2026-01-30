@@ -33,5 +33,4 @@ func _ready():
 	rackView.setup(rack)
 	
 	shooter_manager.spawn_default_shooters(pathArray, rack, bench, conveyor)
-	for i in shooter_manager.default_shooter_symbols.size():
-		rackView.update_view(i)
+	shooter_manager.update_rack_view(rackView)

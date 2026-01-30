@@ -90,3 +90,7 @@ func _on_shooter_completed_rotation(shooter: Shooter):
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
 	conveyorPath.try_put_shooter_on_conveyor(shooter)
+
+func update_rack_view(rack_view: RackView) -> void:
+	for i in range(shooters.size()):
+		rack_view.update_view(i)
