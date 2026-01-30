@@ -79,19 +79,17 @@ func get_next_step(shooter: Shooter):
 	
 
 func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
-	for col in rack.slots:
-		if col.size() > 0 and col[col.size() -1] == shooter:
-			if shooters_on_conveyor.size() >= max_conveyor_shooters:
-				conveyor_full.emit()
-				push_warning("Conveyor full")
-				return false
-			
-			col.pop_back()
-			shooters_on_conveyor.append(shooter)
-			shooter_added_to_conveyor.emit(shooter)
-			return true
-	push_warning("Shooter is not on the top of a column")
-	return false
+	if shooters_on_conveyor.size() >= max_conveyor_shooters:
+		conveyor_full.emit()
+		push_warning("Conveyor full")
+		return false
+	
+	if not rack.remove_shooter_from_top(shooter):
+		push_warning("Shooter is not on the top of a column")
+	
+	shooters_on_conveyor.append(shooter)
+	shooter_added_to_conveyor.emit(shooter)
+	return true
 
 func update_conveyor(delta:float):
 	for shooter in shooters_on_conveyor:

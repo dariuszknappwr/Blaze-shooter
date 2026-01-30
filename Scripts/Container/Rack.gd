@@ -28,3 +28,16 @@ func get_slot_position(i: int) -> Vector3:
 	var col = i % number_of_columns
 	var row = i / number_of_columns
 	return Vector3(col, 0, row)
+
+func is_shooter_on_top(shooter: Shooter) -> bool:
+	for col in slots:
+		if col.size() > 0 and col[col.size() - 1] == shooter:
+			return true
+	return false
+
+func remove_shooter_from_top(shooter: Shooter) -> bool:
+	for col in slots:
+		if col.size() > 0 and col[col.size() - 1] == shooter:
+			col.pop_back()
+			return true
+	return false
