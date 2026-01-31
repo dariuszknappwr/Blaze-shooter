@@ -3,8 +3,6 @@ class_name ShooterManager
 
 @export var shooter_scene: PackedScene
 @export var grid_config: GridConfig
-@export var max_conveyor_shooters := 5
-@export var conveyor_speed := 2.0
 @export var color_controller: ColorController
 @export var rackView: RackView
 @export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
@@ -45,7 +43,7 @@ func _on_conveyor_full():
 	print("Conveyor is full! Game might need to handle this")
 
 func _on_shooter_added_to_rack(shooter: Shooter, pos: Vector3):
-	var view: Node3D = shooter_container_views.get(shooter)
+	var view: Node3D = _get_view_for_shooter(shooter)
 	if view == null:
 		return
 	
@@ -54,7 +52,7 @@ func _on_shooter_added_to_rack(shooter: Shooter, pos: Vector3):
 
 func _update_shooter_view():
 	for shooter in shooter_container_views.keys():
-		var view = shooter_container_views[shooter]
+		var view = _get_view_for_shooter(shooter)
 		var world_pos = rackView.get_shooter_world_position(shooter, rack)
 		view.set_position(world_pos)
 
@@ -78,3 +76,6 @@ func _on_shooter_completed_path(shooter: Shooter):
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
 	conveyor.try_put_shooter_on_conveyor(shooter)
+
+func _get_view_for_shooter(shooter: Shooter) -> Node3D:
+	return shooter_container_views.get(shooter)
