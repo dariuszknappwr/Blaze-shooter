@@ -15,9 +15,9 @@ var max_conveyor_shooters := 5
 var grid: Grid
 var rack: Rack
 
-signal shooter_added_to_conveyor(shooter: Shooter)
+signal shooter_entered_conveyor(shooter: Shooter)
 signal conveyor_full()
-signal shooter_completed_rotation(shooter: Shooter)
+signal shooter_completed_path(shooter: Shooter)
 
 func _init(shooter_rack: Rack):
 	rack = shooter_rack
@@ -63,7 +63,7 @@ func get_next_step(shooter: Shooter):
 	var next_step = shooter.path_index + 1
 	var out_of_array = next_step > _steps.size()
 	if out_of_array:
-		shooter_completed_rotation.emit(shooter)
+		shooter_completed_path.emit(shooter)
 		return
 	shooter.advance()
 	
@@ -78,7 +78,7 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 		return false
 	
 	shooters_on_conveyor.append(shooter)
-	shooter_added_to_conveyor.emit(shooter)
+	shooter_entered_conveyor.emit(shooter)
 	return true
 
 func update_conveyor(delta:float):

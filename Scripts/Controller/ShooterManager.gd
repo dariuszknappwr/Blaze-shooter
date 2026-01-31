@@ -13,7 +13,7 @@ var conveyor: ConveyorPath
 var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
-signal shooter_sent_to_bench(shooter: Shooter)
+signal shooter_entered_bench(shooter: Shooter)
 
 
 func spawn_shooters(shooter_symbols: Array, shooter_rack: Rack, conveyorPath_: ConveyorPath):
@@ -33,12 +33,12 @@ func spawn_default_shooters(shooter_rack: Rack, conveyorPath_: ConveyorPath):
 
 func connect_signals(conveyorPath: ConveyorPath, rack_data: Rack):
 	conveyor = conveyorPath
-	conveyor.shooter_added_to_conveyor.connect(_on_shooter_added_to_conveyor)
+	conveyor.shooter_entered_conveyor.connect(_on_shooter_entered_conveyor)
 	conveyor.conveyor_full.connect(_on_conveyor_full)
-	conveyor.shooter_completed_rotation.connect(_on_shooter_completed_rotation)
+	conveyor.shooter_completed_path.connect(_on_shooter_completed_path)
 	rack_data.shooter_added_to_rack.connect(_on_shooter_added_to_rack)
 
-func _on_shooter_added_to_conveyor(shooter: Shooter):
+func _on_shooter_entered_conveyor(shooter: Shooter):
 	print("Shooter added to conveyor: ", shooter.color_symbol)
 	# ShooterManager can now invoke Bench methods if needed
 
@@ -69,8 +69,8 @@ func create_shooter_view(shooter: Shooter):
 func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
 	return conveyor.get_step(shooter.path_index)
 
-func _on_shooter_completed_rotation(shooter: Shooter):
-	shooter_sent_to_bench.emit(shooter)
+func _on_shooter_completed_path(shooter: Shooter):
+	shooter_entered_bench.emit(shooter)
 
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
