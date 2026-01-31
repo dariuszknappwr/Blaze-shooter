@@ -45,8 +45,12 @@ func _on_conveyor_full():
 	print("Conveyor is full! Game might need to handle this")
 
 func _on_shooter_added_to_rack(shooter: Shooter, pos: Vector3):
-	var view = shooter_container_views.get(shooter)
-	#shooter.set_position(pos)
+	var view: Node3D = shooter_container_views.get(shooter)
+	if view == null:
+		return
+	
+	var world_pos = rackView.get_shooter_world_position(shooter, rack)
+	view.set_position(world_pos)
 
 func _update_shooter_view():
 	for shooter in shooter_container_views.keys():
