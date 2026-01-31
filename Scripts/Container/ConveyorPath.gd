@@ -82,9 +82,14 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 
 func update_conveyor(delta:float):
 	for shooter in shooters_on_conveyor:
-		
-		if not shooter.has_shot_this_step:
-			var target = shooter.find_target(grid)
-			if target != Vector2i(-1,-1):
-				grid.get_cell(target.x, target.y).hit()
-			shooter.has_shot_this_step = true
+		_process_shooter_on_conveyor(shooter)
+
+func _process_shooter_on_conveyor(shooter: Shooter)-> void:
+	if shooter.has_shot_this_step:
+		return;
+	
+	var target = shooter.find_target(grid)
+	if target != Vector2i(-1,-1):
+		grid.get_cell(target.x, target.y).hit()
+	
+	shooter.has_shot_this_step = true
