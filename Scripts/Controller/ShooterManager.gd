@@ -52,10 +52,8 @@ func _on_shooter_added_to_rack(shooter: Shooter, pos: Vector3):
 func _update_shooter_view():
 	for shooter in shooter_container_views.keys():
 		var view = shooter_container_views[shooter]
-		var pos2D = rack.get_shooter_position(shooter)
-		var pos3D = Vector3(pos2D.x, 0, pos2D.y)
-		var rootPos = rackView.get_rack_starting_position()
-		view.set_position(rootPos + pos3D * grid_config.cell_size)
+		var world_pos = rackView.get_shooter_world_position(shooter, rack)
+		view.set_position(world_pos)
 
 func create_shooter(symbol: String, bullets: int, column: int):
 	var shooter = Shooter.new(symbol, bullets, conveyor.get_steps())
