@@ -68,7 +68,7 @@ func create_shooter_view(shooter: Shooter):
 	shooter_container_views[shooter] = view
 	return view
 
-func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
+func get_current_step(shooter: Shooter) -> Step:
 	return conveyor.get_step(shooter.path_index)
 
 func _on_shooter_completed_path(shooter: Shooter):

@@ -1,25 +1,7 @@
 extends RefCounted
 class_name ConveyorPath
 
-enum Edge { BOTTOM, RIGHT, TOP, LEFT }
 
-class Step:
-	var grid_pos: Vector2i
-	var edge: Edge
-	var shoot_dir: Vector2i
-
-class ConveyorShooterState:
-	var shooter: Shooter
-	var path_index: int = -1 #before first cell
-	var has_shot_this_step
-	var time_since_last_step := 0.0
-	var step_interval := 0.5 #time to conveyor field in seconds
-	
-	func _init(shooter_data: Shooter):
-		shooter = shooter_data
-	
-	func get_shooter():
-		return shooter
 
 var _steps: Array[Step] = []
 var speed := 1.0
@@ -46,24 +28,24 @@ func initialize(grid_data: Grid) -> void:
 	
 	# BOTTOM (x: 0 -> width-1, y = height)
 	for x in range(width):
-		_steps.append(_create_step(Vector2i(x, height), Edge.BOTTOM, Vector2i(0,-1)))
+		_steps.append(_create_step(Vector2i(x, height), Step.Edge.BOTTOM, Vector2i(0,-1)))
 	
 	# RIGHT (y: height-1 -> 0, x = width)
 	for y in range(height -1, -1, -1):
-		_steps.append(_create_step(Vector2i(width,y), Edge.RIGHT, Vector2i(-1,0)))
+		_steps.append(_create_step(Vector2i(width,y), Step.Edge.RIGHT, Vector2i(-1,0)))
 	
 	# TOP (x: width-1 -> 0, y = -1)
 	for x in range(width -1, -1, -1):
-		_steps.append(_create_step(Vector2i(x,-1), Edge.TOP, Vector2i(0,1)))
+		_steps.append(_create_step(Vector2i(x,-1), Step.Edge.TOP, Vector2i(0,1)))
 	
 	# Left (x = -1, y: 0 -> height-1)
 	for y in range(height):
-		_steps.append(_create_step(Vector2i(-1,y), Edge.LEFT, Vector2i(1,0)))
+		_steps.append(_create_step(Vector2i(-1,y), Step.Edge.LEFT, Vector2i(1,0)))
 
 func get_steps() -> Array[Step]:
 	return _steps
 
-func _create_step(grid_pos: Vector2i, edge: Edge, shoot_dir: Vector2i) -> Step:
+func _create_step(grid_pos: Vector2i, edge: Step.Edge, shoot_dir: Vector2i) -> Step:
 	var s = Step.new()
 	s.grid_pos = grid_pos
 	s.edge = edge
