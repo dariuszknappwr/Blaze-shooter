@@ -50,8 +50,6 @@ func get_size():
 	return _steps.size()
 
 func _advance_shooter(shooter: Shooter):
-	if _steps.is_empty():
-		return
 	var state = _get_shooter_state(shooter)
 	if state:
 		state.path_index = (state.path_index + 1) % _steps.size()
@@ -84,12 +82,15 @@ func put_shooter_on_conveyor(shooter: Shooter):
 func update_conveyor(delta:float):
 	for state in shooters_on_conveyor.duplicate():
 		var shooter = state.get_shooter()
-		_process_shooter_on_conveyor(shooter)
+		state.time_since_last_step += delta
+		if state.time_since_last_step >= state.step_interval:
+			_process_shooter_on_conveyor(shooter)
 
 func _process_shooter_on_conveyor(shooter: Shooter)-> void:
 	var state = _get_shooter_state(shooter)
 	_try_shoot(shooter)
 	_advance_shooter(shooter)
+	_get_shooter_state(shooter).time_since_last_step = 0
 	
 	
 
@@ -125,3 +126,12 @@ func find_target(shooter: Shooter) -> Vector2i:
 	if step == null:
 		return Vector2i(-1,-1)
 	return ShooterTargetFinder.find_target_from_step(step, shooter.color_symbol, grid)
+
+func get_shooters_on_conveyor() -> Array[Shooter]:
+	var shooters: Array[Shooter]
+	for state in shooters_on_conveyor:
+		shooters.append(state.shooter)
+	return shooters
+
+func get_states_on_conveyor() -> Array[ConveyorShooterState]:
+	return shooters_on_conveyor

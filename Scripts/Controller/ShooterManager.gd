@@ -14,6 +14,12 @@ var rack: Rack
 var bench
 signal shooter_entered_bench(shooter: Shooter)
 
+func _process(delta: float):
+	for shooter in conveyor.get_shooters_on_conveyor():
+		var view = _get_view_for_shooter(shooter)
+		var state = conveyor._get_shooter_state(shooter)
+		var target_pos = conveyorView.get_conveyor_step_world_position_from_index(state.path_index)
+		view.move_to(target_pos)
 
 func spawn_shooters(shooter_symbols: Array, shooter_rack: Rack, conveyorPath_: ConveyorPath):
 	rack = shooter_rack
@@ -38,7 +44,7 @@ func connect_signals(conveyorPath: ConveyorPath, rack_data: Rack):
 
 func _on_shooter_entered_conveyor(shooter: Shooter):
 	print("Shooter added to conveyor: ", shooter.color_symbol)
-	# ShooterManager can now invoke Bench methods if needed
+	rack.remove_shooter_from_top(shooter)
 
 func _on_conveyor_full():
 	print("Conveyor is full! Game might need to handle this")
