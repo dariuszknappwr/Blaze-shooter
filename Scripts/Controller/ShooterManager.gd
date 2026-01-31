@@ -7,12 +7,11 @@ class_name ShooterManager
 @export var rackView: RackView
 @export var conveyorView: ConveyorPathView
 @export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
+@export var benchView: BenchView
 
 var conveyor: ConveyorPath
 var shooter_container_views: Dictionary = {}
 var rack: Rack
-var bench
-signal shooter_entered_bench(shooter: Shooter)
 
 func _process(delta: float):
 	for shooter in conveyor.get_shooters_on_conveyor():
@@ -78,7 +77,11 @@ func get_current_step(shooter: Shooter) -> Step:
 	return conveyor.get_step(shooter.path_index)
 
 func _on_shooter_completed_path(shooter: Shooter):
-	shooter_entered_bench.emit(shooter)
+	print("Shooter completed path")
+	conveyor.remove_shooter_from_conveyor(shooter)
+	var shooterView = _get_view_for_shooter(shooter)
+	benchView.move_shooter_to_bench(shooterView)
+	return
 
 func _on_shooter_clicked(shooter):
 	print("Shooter clicked: ", shooter.color_symbol)

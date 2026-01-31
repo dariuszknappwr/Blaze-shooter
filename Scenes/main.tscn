@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=20 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://couhn71fn4irt" path="res://Scripts/View/RackView.gd" id="9_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://042ngtw65i8n" path="res://Models/bench_rack_slot.tscn" id="10_hptm8"]
 [ext_resource type="Script" uid="uid://btheoisyygfhv" path="res://Scripts/Controller/ConveyorController.gd" id="12_6iyac"]
+[ext_resource type="Script" uid="uid://c87i6f8lwihr4" path="res://Scripts/Controller/BenchController.gd" id="13_fdnlq"]
+[ext_resource type="Script" uid="uid://bgcu4bwvb1oyf" path="res://Scripts/View/BenchView.gd" id="14_jkdf5"]
 
 [sub_resource type="Resource" id="Resource_kry3j"]
 script = ExtResource("6_21xkr")
@@ -49,7 +51,7 @@ script = ExtResource("4_jjvhh")
 cell_view_scene = ExtResource("2_bo1nx")
 grid_config = SubResource("Resource_kry3j")
 
-[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller", "conveyorView", "conveyorController", "rackView")]
+[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller", "conveyorView", "conveyorController", "benchController", "rackView")]
 script = ExtResource("3_jjvhh")
 legend = ExtResource("4_kry3j")
 grid_view = NodePath("../GridView")
@@ -58,16 +60,18 @@ shooter_manager = NodePath("../ShooterManager")
 color_controller = NodePath("../ColorController")
 conveyorView = NodePath("../ConveyorPathView")
 conveyorController = NodePath("../ConveyorController")
+benchController = NodePath("../Bench_Controller")
 rackView = NodePath("../RackView")
 metadata/_custom_type_script = "uid://bd35n1nt0077u"
 
-[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller", "rackView", "conveyorView")]
+[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller", "rackView", "conveyorView", "benchView")]
 script = ExtResource("6_344ge")
 shooter_scene = ExtResource("7_ynf5e")
 grid_config = SubResource("Resource_6bp64")
 color_controller = NodePath("../ColorController")
 rackView = NodePath("../RackView")
 conveyorView = NodePath("../ConveyorPathView")
+benchView = NodePath("../BenchView")
 
 [node name="ColorController" type="Node3D" parent="."]
 script = ExtResource("8_ynf5e")
@@ -86,3 +90,11 @@ grid_config = SubResource("Resource_hptm8")
 
 [node name="ConveyorController" type="Node3D" parent="."]
 script = ExtResource("12_6iyac")
+
+[node name="Bench_Controller" type="Node3D" parent="." node_paths=PackedStringArray("benchView")]
+script = ExtResource("13_fdnlq")
+benchView = NodePath("../BenchView")
+
+[node name="BenchView" type="Node3D" parent="."]
+script = ExtResource("14_jkdf5")
+bench_starting_position = Vector3(10, 0, 2)

@@ -9,10 +9,11 @@ class_name GameController
 @export var color_controller: ColorController
 @export var conveyorView: ConveyorPathView
 @export var conveyorController: ConveyorController
+@export var benchController: BenchController
+@export var rackView: RackView
 var conveyor: ConveyorPath
 var rack: Rack
 var bench: Bench
-@export var rackView: RackView
 
 func _ready():
 	if not GameControllerValidator.validate(self):
@@ -39,11 +40,11 @@ func initialize_game(grid: Grid) -> void:
 	shooter_manager.connect_signals(conveyor, rack)
 	
 	bench = Bench.new()
-	shooter_manager.shooter_entered_bench.connect(bench.add_shooter)
 	
 	conveyor.initialize(grid)
 	conveyorView.setup(conveyor, grid)
 	conveyorController.setup(conveyor)
+	
 	
 	rackView.setup(rack)
 	shooter_manager.spawn_default_shooters(rack, conveyor)
