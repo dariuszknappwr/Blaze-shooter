@@ -8,9 +8,22 @@ class Step:
 	var edge: Edge
 	var shoot_dir: Vector2i
 
+class ConveyorShooterState:
+	var shooter: Shooter
+	var path_index: int = -1 #before first cell
+	var has_shot_this_step
+	var time_since_last_step := 0.0
+	var step_interval := 0.5 #time to conveyor field in seconds
+	
+	func _init(shooter_data: Shooter):
+		shooter = shooter_data
+	
+	func get_shooter():
+		return shooter
+
 var _steps: Array[Step] = []
 var speed := 1.0
-var shooters_on_conveyor: Array = []
+var shooters_on_conveyor: Array[ConveyorShooterState] = []
 var max_conveyor_shooters := 5
 var grid: Grid
 var rack: Rack
@@ -60,6 +73,19 @@ func _create_step(grid_pos: Vector2i, edge: Edge, shoot_dir: Vector2i) -> Step:
 func get_size():
 	return _steps.size()
 
+func _advance_shooter(shooter: Shooter):
+	if _steps.is_empty():
+		return
+	var state = _get_shooter_state(shooter)
+	if state:
+		state.path_index = (state.path_index + 1) % _steps.size()
+
+func _current_step(shooter: Shooter):
+	if _steps.is_empty():
+		return null
+	var state = _get_shooter_state(shooter)
+	return _steps[state.path_index]
+
 func get_next_step(shooter: Shooter):
 	var next_step = shooter.path_index + 1
 	var out_of_array = next_step > _steps.size()
@@ -78,25 +104,52 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 		push_warning("Shooter is not on the top of a column")
 		return false
 	
-	shooters_on_conveyor.append(shooter)
+	_add_shooter_state_to_conveyor(shooter)
 	shooter_entered_conveyor.emit(shooter)
 	return true
 
 func update_conveyor(delta:float):
-	for shooter in shooters_on_conveyor.duplicate():
+	for state in shooters_on_conveyor.duplicate():
+		var shooter = state.get_shooter()
 		_process_shooter_on_conveyor(shooter)
 
 func _process_shooter_on_conveyor(shooter: Shooter)-> void:
-	if shooter.has_shot_this_step:
-		return;
+	var state = _get_shooter_state(shooter)
+	_try_shoot(shooter)
+	_advance_shooter(shooter)
+	print("processing shooters on conveyor")
 	
-	var target = shooter.find_target(grid)
+	
+
+func _try_shoot(shooter: Shooter):
+	var state = _get_shooter_state(shooter)
+	if state.has_shot_this_step:
+		return;
+	var target = find_target(shooter)
 	if target != Vector2i(-1,-1):
 		grid.get_cell(target.x, target.y).hit()
 	
-	shooter.has_shot_this_step = true
+	state.has_shot_this_step = true
 
 func get_step(index: int) -> Step:
 	if index < 0 or index >= _steps.size():
 		return null
 	return _steps[index]
+
+func _add_shooter_state_to_conveyor(shooter: Shooter):
+	var state: ConveyorShooterState = ConveyorShooterState.new(shooter)
+	shooters_on_conveyor.append(state)
+
+func _get_shooter_state(shooter: Shooter):
+	var state: ConveyorShooterState
+	for s in shooters_on_conveyor:
+		if s.shooter == shooter:
+			state = s
+			break
+	return state
+
+func find_target(shooter: Shooter) -> Vector2i:
+	var step = _current_step(shooter)
+	if step == null:
+		return Vector2i(-1,-1)
+	return ShooterTargetFinder.find_target_from_step(step, shooter.color_symbol, grid)

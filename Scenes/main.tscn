@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=18 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://gd1582wdt105" path="res://Scripts/View/ConveyorPathView.gd" id="9_d1ilt"]
 [ext_resource type="Script" uid="uid://couhn71fn4irt" path="res://Scripts/View/RackView.gd" id="9_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://042ngtw65i8n" path="res://Models/bench_rack_slot.tscn" id="10_hptm8"]
+[ext_resource type="Script" uid="uid://btheoisyygfhv" path="res://Scripts/Controller/ConveyorController.gd" id="12_6iyac"]
 
 [sub_resource type="Resource" id="Resource_kry3j"]
 script = ExtResource("6_21xkr")
@@ -48,7 +49,7 @@ script = ExtResource("4_jjvhh")
 cell_view_scene = ExtResource("2_bo1nx")
 grid_config = SubResource("Resource_kry3j")
 
-[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller", "conveyorView", "rackView")]
+[node name="GameController" type="Node" parent="." node_paths=PackedStringArray("grid_view", "shooter_manager", "color_controller", "conveyorView", "conveyorController", "rackView")]
 script = ExtResource("3_jjvhh")
 legend = ExtResource("4_kry3j")
 grid_view = NodePath("../GridView")
@@ -56,6 +57,7 @@ grid_config = SubResource("Resource_21xkr")
 shooter_manager = NodePath("../ShooterManager")
 color_controller = NodePath("../ColorController")
 conveyorView = NodePath("../ConveyorPathView")
+conveyorController = NodePath("../ConveyorController")
 rackView = NodePath("../RackView")
 metadata/_custom_type_script = "uid://bd35n1nt0077u"
 
@@ -81,3 +83,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 script = ExtResource("9_ynf5e")
 slot_scene = ExtResource("10_hptm8")
 grid_config = SubResource("Resource_hptm8")
+
+[node name="ConveyorController" type="Node3D" parent="."]
+script = ExtResource("12_6iyac")

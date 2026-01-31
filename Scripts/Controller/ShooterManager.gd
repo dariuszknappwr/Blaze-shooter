@@ -58,7 +58,7 @@ func _update_shooter_view():
 		view.set_position(world_pos)
 
 func create_shooter(symbol: String, bullets: int, column: int):
-	var shooter = Shooter.new(symbol, bullets, conveyor.get_steps())
+	var shooter = Shooter.new(symbol, bullets)
 	rack.add_shooter(shooter, column)
 	return shooter
 
