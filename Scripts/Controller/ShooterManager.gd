@@ -13,14 +13,11 @@ var conveyor: ConveyorPath
 var shooter_container_views: Dictionary = {}
 var rack: Rack
 var bench
-var path: Array
 signal shooter_sent_to_bench(shooter: Shooter)
 
 
-func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
-	path = path_
+func spawn_shooters(shooter_symbols: Array, shooter_rack: Rack, conveyorPath_: ConveyorPath):
 	rack = shooter_rack
-	bench = bench_data
 	conveyor = conveyorPath_
 	
 	for i in range(shooter_symbols.size()):
@@ -31,8 +28,8 @@ func spawn_shooters(shooter_symbols: Array, path_: Array, shooter_rack: Rack, be
 	_update_shooter_view()
 	update_rack_view()
 
-func spawn_default_shooters(path, shooter_rack: Rack, bench_data: Bench, conveyorPath_: ConveyorPath):
-	spawn_shooters(default_shooter_symbols, path, shooter_rack, bench_data, conveyorPath_)
+func spawn_default_shooters(shooter_rack: Rack, conveyorPath_: ConveyorPath):
+	spawn_shooters(default_shooter_symbols, shooter_rack, conveyorPath_)
 
 func connect_signals(conveyorPath: ConveyorPath, rack_data: Rack):
 	conveyor = conveyorPath
@@ -61,7 +58,7 @@ func _update_shooter_view():
 		view.set_position(rootPos + pos3D * grid_config.cell_size)
 
 func create_shooter(symbol: String, bullets: int, column: int):
-	var shooter = Shooter.new(symbol, bullets, path)
+	var shooter = Shooter.new(symbol, bullets, conveyor.get_steps())
 	rack.add_shooter(shooter, column)
 	return shooter
 
