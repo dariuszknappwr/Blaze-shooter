@@ -26,7 +26,6 @@ func spawn_shooters(shooter_symbols: Array, shooter_rack: Rack, conveyorPath_: C
 		var view = create_shooter_view(shooter)
 	
 	_update_shooter_view()
-	update_rack_view()
 
 func spawn_default_shooters(shooter_rack: Rack, conveyorPath_: ConveyorPath):
 	spawn_shooters(default_shooter_symbols, shooter_rack, conveyorPath_)
@@ -75,7 +74,3 @@ func _on_shooter_completed_path(shooter: Shooter):
 func _on_shooter_clicked(shooter):
 	print(shooter.color_symbol)
 	conveyor.try_put_shooter_on_conveyor(shooter)
-
-func update_rack_view() -> void:
-	for i in range(shooter_container_views.keys().size()):
-		rackView.update_view(i)
