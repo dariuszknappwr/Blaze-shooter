@@ -35,9 +35,14 @@ func is_shooter_on_top(shooter: Shooter) -> bool:
 			return true
 	return false
 
-func remove_shooter_from_top(shooter: Shooter) -> bool:
+func can_remove_shooter_from_top(shooter: Shooter) -> bool:
+	return _find_column_with_shooter_on_top(shooter) != null
+
+func remove_shooter_from_top(shooter: Shooter):
+	var col = _find_column_with_shooter_on_top(shooter)
+	col.pop_back()
+
+func _find_column_with_shooter_on_top(shooter: Shooter):
 	for col in slots:
 		if col.size() > 0 and col[col.size() - 1] == shooter:
-			col.pop_back()
-			return true
-	return false
+			return col

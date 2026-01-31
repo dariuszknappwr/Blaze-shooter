@@ -76,7 +76,11 @@ func _on_shooter_completed_path(shooter: Shooter):
 
 func _on_shooter_clicked(shooter):
 	print("Shooter clicked: ", shooter.color_symbol)
-	if conveyor.try_put_shooter_on_conveyor(shooter):
+	if !rack.is_shooter_on_top(shooter):
+		print("Shooter is not on top of a column")
+		return
+	if conveyor.can_put_shooter_on_conveyor(shooter):
+		conveyor.put_shooter_on_conveyor(shooter)
 		print("Shooter sent to conveyor")
 		var view = _get_view_for_shooter(shooter)
 		if view != null:
@@ -86,3 +90,8 @@ func _on_shooter_clicked(shooter):
 		print("Conveyor full, cannot move shooter")
 func _get_view_for_shooter(shooter: Shooter) -> Node3D:
 	return shooter_container_views.get(shooter)
+
+func try_move_shooter_from_rack_to_conveyor(shooter: Shooter) -> void:
+	if rack.can_remove_shooter_from_top(shooter) and conveyor.can_put_shooter_on_conveyor(shooter):
+		rack.remove_shooter_from_top(shooter)
+		conveyor.try_put_shooter_on_conveyor(shooter)

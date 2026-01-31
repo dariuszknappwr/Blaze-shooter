@@ -35,7 +35,7 @@ func initialize_game(grid: Grid) -> void:
 	grid_view.set_grid(grid, color_controller)
 	
 	rack = Rack.new()
-	conveyor = ConveyorPath.new(rack)
+	conveyor = ConveyorPath.new()
 	shooter_manager.connect_signals(conveyor, rack)
 	
 	bench = Bench.new()

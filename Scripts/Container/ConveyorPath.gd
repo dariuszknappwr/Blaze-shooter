@@ -1,21 +1,15 @@
 extends RefCounted
 class_name ConveyorPath
 
-
-
 var _steps: Array[Step] = []
 var speed := 1.0
 var shooters_on_conveyor: Array[ConveyorShooterState] = []
 var max_conveyor_shooters := 5
 var grid: Grid
-var rack: Rack
 
 signal shooter_entered_conveyor(shooter: Shooter)
 signal conveyor_full()
 signal shooter_completed_path(shooter: Shooter)
-
-func _init(shooter_rack: Rack):
-	rack = shooter_rack
 
 func initialize(grid_data: Grid) -> void:
 	if !_steps.is_empty():
@@ -75,20 +69,17 @@ func get_next_step(shooter: Shooter):
 		shooter_completed_path.emit(shooter)
 		return
 	shooter.advance()
-	
-func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
+
+func can_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 	if shooters_on_conveyor.size() >= max_conveyor_shooters:
-		conveyor_full.emit()
-		push_warning("Conveyor full")
 		return false
-	
-	if not rack.remove_shooter_from_top(shooter):
-		push_warning("Shooter is not on the top of a column")
-		return false
-	
+	return true
+
+func put_shooter_on_conveyor(shooter: Shooter):
+	if !can_put_shooter_on_conveyor(shooter):
+		return
 	_add_shooter_state_to_conveyor(shooter)
 	shooter_entered_conveyor.emit(shooter)
-	return true
 
 func update_conveyor(delta:float):
 	for state in shooters_on_conveyor.duplicate():
@@ -99,7 +90,6 @@ func _process_shooter_on_conveyor(shooter: Shooter)-> void:
 	var state = _get_shooter_state(shooter)
 	_try_shoot(shooter)
 	_advance_shooter(shooter)
-	print("processing shooters on conveyor")
 	
 	
 
