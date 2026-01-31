@@ -72,7 +72,7 @@ func create_shooter_view(shooter: Shooter):
 	return view
 
 func get_current_step(shooter: Shooter) -> ConveyorPath.Step:
-	return path[shooter.path_index]
+	return conveyor.get_step(shooter.path_index)
 
 func _on_shooter_completed_rotation(shooter: Shooter):
 	shooter_sent_to_bench.emit(shooter)

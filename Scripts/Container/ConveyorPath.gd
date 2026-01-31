@@ -8,7 +8,7 @@ class Step:
 	var edge: Edge
 	var shoot_dir: Vector2i
 
-var steps: Array[Step] = []
+var _steps: Array[Step] = []
 var speed := 1.0
 var shooters_on_conveyor: Array = []
 var max_conveyor_shooters := 5
@@ -22,9 +22,9 @@ signal shooter_completed_rotation(shooter: Shooter)
 func _init(shooter_rack: Rack):
 	rack = shooter_rack
 
-func get_steps(grid_data: Grid) -> Array[Step]:
-	if !steps.is_empty():
-		return steps
+func initialize(grid_data: Grid) -> void:
+	if !_steps.is_empty():
+		return
 	
 	grid = grid_data
 	var width = grid.width
@@ -32,21 +32,22 @@ func get_steps(grid_data: Grid) -> Array[Step]:
 	
 	# BOTTOM (x: 0 -> width-1, y = height)
 	for x in range(width):
-		steps.append(_create_step(Vector2i(x, height), Edge.BOTTOM, Vector2i(0,-1)))
+		_steps.append(_create_step(Vector2i(x, height), Edge.BOTTOM, Vector2i(0,-1)))
 	
 	# RIGHT (y: height-1 -> 0, x = width)
 	for y in range(height -1, -1, -1):
-		steps.append(_create_step(Vector2i(width,y), Edge.RIGHT, Vector2i(-1,0)))
+		_steps.append(_create_step(Vector2i(width,y), Edge.RIGHT, Vector2i(-1,0)))
 	
 	# TOP (x: width-1 -> 0, y = -1)
 	for x in range(width -1, -1, -1):
-		steps.append(_create_step(Vector2i(x,-1), Edge.TOP, Vector2i(0,1)))
+		_steps.append(_create_step(Vector2i(x,-1), Edge.TOP, Vector2i(0,1)))
 	
 	# Left (x = -1, y: 0 -> height-1)
 	for y in range(height):
-		steps.append(_create_step(Vector2i(-1,y), Edge.LEFT, Vector2i(1,0)))
-	
-	return steps
+		_steps.append(_create_step(Vector2i(-1,y), Edge.LEFT, Vector2i(1,0)))
+
+func get_steps() -> Array[Step]:
+	return _steps
 
 func _create_step(grid_pos: Vector2i, edge: Edge, shoot_dir: Vector2i) -> Step:
 	var s = Step.new()
@@ -56,11 +57,11 @@ func _create_step(grid_pos: Vector2i, edge: Edge, shoot_dir: Vector2i) -> Step:
 	return s
 
 func get_size():
-	return steps.size()
+	return _steps.size()
 
 func get_next_step(shooter: Shooter):
 	var next_step = shooter.path_index + 1
-	var out_of_array = next_step > steps.size()
+	var out_of_array = next_step > _steps.size()
 	if out_of_array:
 		shooter_completed_rotation.emit(shooter)
 		return
@@ -81,7 +82,7 @@ func try_put_shooter_on_conveyor(shooter: Shooter) -> bool:
 	return true
 
 func update_conveyor(delta:float):
-	for shooter in shooters_on_conveyor:
+	for shooter in shooters_on_conveyor.duplicate():
 		_process_shooter_on_conveyor(shooter)
 
 func _process_shooter_on_conveyor(shooter: Shooter)-> void:
@@ -93,3 +94,8 @@ func _process_shooter_on_conveyor(shooter: Shooter)-> void:
 		grid.get_cell(target.x, target.y).hit()
 	
 	shooter.has_shot_this_step = true
+
+func get_step(index: int) -> Step:
+	if index < 0 or index >= _steps.size():
+		return null
+	return _steps[index]
