@@ -24,4 +24,6 @@ func current_step():
 
 func find_target(grid: Grid) -> Vector2i:
 	var step = current_step()
+	if step == null:
+		return Vector2i(-1,-1)
 	return ShooterTargetFinder.find_target_from_step(step, color_symbol, grid)

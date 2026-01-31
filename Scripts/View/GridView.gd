@@ -28,8 +28,11 @@ func generate_grid_from_file(fileName: String, color_controller: ColorController
 
 func _generate_grid_view(color_controller: ColorController):
 	gridNode = Node3D.new()
-	for y in range(grid.length):
-		for x in range(grid.width):
+	var grid_size: Vector2i = grid.get_grid_size()
+	var width = grid_size.x
+	var length = grid_size.y
+	for y in range(length):
+		for x in range(width):
 			var cell = grid.get_cell(x, y)
 			var cell_view = cell_view_scene.instantiate() as CellView
 			cell_view.setup(cell, cell_view_scene, color_controller)

@@ -27,8 +27,9 @@ func initialize(grid_data: Grid) -> void:
 		return
 	
 	grid = grid_data
-	var width = grid.width
-	var height = grid.length
+	var grid_size = grid.get_grid_size()
+	var width = grid_size.x
+	var height = grid_size.y
 	
 	# BOTTOM (x: 0 -> width-1, y = height)
 	for x in range(width):

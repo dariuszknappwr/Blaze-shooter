@@ -5,6 +5,7 @@ class_name ShooterManager
 @export var grid_config: GridConfig
 @export var color_controller: ColorController
 @export var rackView: RackView
+@export var conveyorView: ConveyorPathView
 @export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
 
 var conveyor: ConveyorPath
@@ -74,8 +75,14 @@ func _on_shooter_completed_path(shooter: Shooter):
 	shooter_entered_bench.emit(shooter)
 
 func _on_shooter_clicked(shooter):
-	print(shooter.color_symbol)
-	conveyor.try_put_shooter_on_conveyor(shooter)
-
+	print("Shooter clicked: ", shooter.color_symbol)
+	if conveyor.try_put_shooter_on_conveyor(shooter):
+		print("Shooter sent to conveyor")
+		var view = _get_view_for_shooter(shooter)
+		if view != null:
+			var target_pos = conveyorView.get_conveyor_start_world_position()
+			view.move_to(target_pos)
+	else:
+		print("Conveyor full, cannot move shooter")
 func _get_view_for_shooter(shooter: Shooter) -> Node3D:
 	return shooter_container_views.get(shooter)

@@ -19,6 +19,7 @@ func _ready() -> void:
 	area.add_child(collision)
 	add_child(area)
 	area.input_event.connect(_on_area_clicked)
+	target_position = global_transform.origin
 
 func setup(shooter_data: Shooter):
 	shooter = shooter_data
@@ -38,3 +39,10 @@ func _apply_color(color: Color):
 func _on_area_clicked(camera, event, pos, normal, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		clicked.emit(shooter)
+
+func move_to(target: Vector3):
+	target_position = target
+
+func _process(delta: float) -> void:
+	if target_position != null:
+		global_transform.origin = global_transform.origin.lerp(target_position, move_speed * delta)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://w47h8kxhiq20"]
+[gd_scene load_steps=16 format=3 uid="uid://w47h8kxhiq20"]
 
 [ext_resource type="PackedScene" uid="uid://exxg2xsnft62" path="res://Models/mesh_instance_3d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bd35n1nt0077u" path="res://Scripts/Controller/GameController.gd" id="3_jjvhh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://g6yqee1hse0m" path="res://Scripts/Controller/ShooterManager.gd" id="6_344ge"]
 [ext_resource type="PackedScene" uid="uid://oxw5asvujpy" path="res://Models/shooter.tscn" id="7_ynf5e"]
 [ext_resource type="Script" uid="uid://ov4rieg0a4il" path="res://Scripts/Controller/ColorController.gd" id="8_ynf5e"]
+[ext_resource type="Script" uid="uid://gd1582wdt105" path="res://Scripts/View/ConveyorPathView.gd" id="9_d1ilt"]
 [ext_resource type="Script" uid="uid://couhn71fn4irt" path="res://Scripts/View/RackView.gd" id="9_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://042ngtw65i8n" path="res://Models/bench_rack_slot.tscn" id="10_hptm8"]
 
@@ -53,12 +54,13 @@ color_controller = NodePath("../ColorController")
 rackView = NodePath("../RackView")
 metadata/_custom_type_script = "uid://bd35n1nt0077u"
 
-[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller", "rackView")]
+[node name="ShooterManager" type="Node3D" parent="." node_paths=PackedStringArray("color_controller", "rackView", "conveyorView")]
 script = ExtResource("6_344ge")
 shooter_scene = ExtResource("7_ynf5e")
 grid_config = SubResource("Resource_6bp64")
 color_controller = NodePath("../ColorController")
 rackView = NodePath("../RackView")
+conveyorView = NodePath("../ConveyorPathView")
 
 [node name="ColorController" type="Node3D" parent="."]
 script = ExtResource("8_ynf5e")
@@ -66,6 +68,7 @@ legend = ExtResource("4_kry3j")
 metadata/_custom_type_script = "uid://ov4rieg0a4il"
 
 [node name="ConveyorPathView" type="Node3D" parent="."]
+script = ExtResource("9_d1ilt")
 
 [node name="RackView" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
