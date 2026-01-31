@@ -13,9 +13,13 @@ func _init(symbol: String, bullets: int, path_array: Array):
 	path = path_array
 
 func advance():
+	if path.is_empty():
+		return
 	path_index = (path_index + 1) % path.size()
 
 func current_step():
+	if path.is_empty():
+		return null
 	return path[path_index]
 
 func find_target(grid: Grid) -> Vector2i:
