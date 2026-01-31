@@ -7,6 +7,7 @@ class_name GameController
 @export var grid_config: GridConfig
 @export var shooter_manager: ShooterManager
 @export var color_controller: ColorController
+@export var conveyorView: ConveyorPathView
 var conveyor: ConveyorPath
 var rack: Rack
 var bench: Bench
@@ -40,6 +41,7 @@ func initialize_game(grid: Grid) -> void:
 	shooter_manager.shooter_entered_bench.connect(bench.add_shooter)
 	
 	conveyor.initialize(grid)
+	conveyorView.setup(conveyor, grid)
 	
 	rackView.setup(rack)
 	shooter_manager.spawn_default_shooters(rack, conveyor)
