@@ -3,10 +3,12 @@ class_name Bench
 
 var max_size := 5
 var slots : Array = []
+signal gameOver
 
 func add_shooter(shooter: Shooter):
 	if is_full():
-		push_error("Game Over!")
+		print("Game Over!")
+		gameOver.emit()
 		return
 	slots.append(shooter)
 
@@ -24,4 +26,7 @@ func get_bench_column(shooter: Shooter) -> int:
 	return slots.find(shooter)
 
 func is_full() -> bool:
-	return slots.size() >= max_size
+	return get_size() >= max_size
+
+func get_size() -> int:
+	return slots.size()

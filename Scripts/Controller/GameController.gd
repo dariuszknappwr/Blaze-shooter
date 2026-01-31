@@ -40,6 +40,7 @@ func initialize_game(grid: Grid) -> void:
 	shooter_manager.connect_signals(conveyor, rack)
 	
 	bench = Bench.new()
+	benchController.setup(bench)
 	
 	conveyor.initialize(grid)
 	conveyorView.setup(conveyor, grid)

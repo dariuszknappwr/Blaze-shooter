@@ -8,6 +8,7 @@ class_name ShooterManager
 @export var conveyorView: ConveyorPathView
 @export var default_shooter_symbols: Array = ["0","1","1","2","0","1","2","0","0","1"]
 @export var benchView: BenchView
+@export var benchController: BenchController
 
 var conveyor: ConveyorPath
 var shooter_container_views: Dictionary = {}
@@ -36,14 +37,9 @@ func spawn_default_shooters(shooter_rack: Rack, conveyorPath_: ConveyorPath):
 
 func connect_signals(conveyorPath: ConveyorPath, rack_data: Rack):
 	conveyor = conveyorPath
-	conveyor.shooter_entered_conveyor.connect(_on_shooter_entered_conveyor)
 	conveyor.conveyor_full.connect(_on_conveyor_full)
 	conveyor.shooter_completed_path.connect(_on_shooter_completed_path)
 	rack_data.shooter_added_to_rack.connect(_on_shooter_added_to_rack)
-
-func _on_shooter_entered_conveyor(shooter: Shooter):
-	print("Shooter added to conveyor: ", shooter.color_symbol)
-	rack.remove_shooter_from_top(shooter)
 
 func _on_conveyor_full():
 	print("Conveyor is full! Game might need to handle this")
@@ -80,27 +76,26 @@ func _on_shooter_completed_path(shooter: Shooter):
 	print("Shooter completed path")
 	conveyor.remove_shooter_from_conveyor(shooter)
 	var shooterView = _get_view_for_shooter(shooter)
-	benchView.move_shooter_to_bench(shooterView)
+	benchController.add_shooter_to_bench(shooter, shooterView)
 	return
 
 func _on_shooter_clicked(shooter):
-	print("Shooter clicked: ", shooter.color_symbol)
-	if !rack.is_shooter_on_top(shooter):
-		print("Shooter is not on top of a column")
+	if not _move_shooter_from_rack_to_conveyor(shooter):
 		return
-	if conveyor.can_put_shooter_on_conveyor(shooter):
-		conveyor.put_shooter_on_conveyor(shooter)
-		print("Shooter sent to conveyor")
-		var view = _get_view_for_shooter(shooter)
-		if view != null:
-			var target_pos = conveyorView.get_conveyor_start_world_position()
-			view.move_to(target_pos)
-	else:
-		print("Conveyor full, cannot move shooter")
+	var view = _get_view_for_shooter(shooter)
+	if view != null:
+		view.move_to(conveyorView.get_conveyor_start_world_position())
+
 func _get_view_for_shooter(shooter: Shooter) -> Node3D:
 	return shooter_container_views.get(shooter)
 
-func try_move_shooter_from_rack_to_conveyor(shooter: Shooter) -> void:
-	if rack.can_remove_shooter_from_top(shooter) and conveyor.can_put_shooter_on_conveyor(shooter):
-		rack.remove_shooter_from_top(shooter)
-		conveyor.try_put_shooter_on_conveyor(shooter)
+func _move_shooter_from_rack_to_conveyor(shooter: Shooter) -> bool:
+	if not rack.can_remove_shooter_from_top(shooter):
+		return false
+	
+	if not conveyor.can_put_shooter_on_conveyor(shooter):
+		return false
+	
+	rack.remove_shooter_from_top(shooter)
+	conveyor.put_shooter_on_conveyor(shooter)
+	return true

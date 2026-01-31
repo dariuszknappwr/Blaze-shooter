@@ -7,7 +7,6 @@ var shooters_on_conveyor: Array[ConveyorShooterState] = []
 var max_conveyor_shooters := 5
 var grid: Grid
 
-signal shooter_entered_conveyor(shooter: Shooter)
 signal conveyor_full()
 signal shooter_completed_path(shooter: Shooter)
 
@@ -74,7 +73,6 @@ func put_shooter_on_conveyor(shooter: Shooter):
 	if !can_put_shooter_on_conveyor(shooter):
 		return
 	_add_shooter_state_to_conveyor(shooter)
-	shooter_entered_conveyor.emit(shooter)
 
 func update_conveyor(delta:float):
 	for state in shooters_on_conveyor.duplicate():
@@ -134,6 +132,4 @@ func get_states_on_conveyor() -> Array[ConveyorShooterState]:
 
 func remove_shooter_from_conveyor(shooter: Shooter):
 	var state = _get_shooter_state(shooter)
-	print(shooters_on_conveyor)
 	shooters_on_conveyor.erase(state)
-	print(shooters_on_conveyor)
