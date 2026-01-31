@@ -15,23 +15,31 @@ var bench: Bench
 func _ready():
 	if not GameControllerValidator.validate(self):
 		return
+		
+	var grid = load_level()
+	if grid == null:
+		return
 	
+	initialize_game(grid)
+
+func load_level() -> Grid:
 	var loader = GridLoader.new()
-	
 	var grid = loader.load_from_file(map_path)
 	if grid == null:
 		push_error("GameController: failed to load grid from file")
-		return
-	
+	return grid
+
+func initialize_game(grid: Grid) -> void:
 	grid_view.set_grid(grid, color_controller)
+	
 	rack = Rack.new()
 	conveyor = ConveyorPath.new(rack)
 	shooter_manager.connect_signals(conveyor, rack)
+	
 	bench = Bench.new()
 	shooter_manager.shooter_entered_bench.connect(bench.add_shooter)
+	
 	conveyor.initialize(grid)
-	var pathArray = conveyor.get_steps()
 	
 	rackView.setup(rack)
-	
 	shooter_manager.spawn_default_shooters(rack, conveyor)
